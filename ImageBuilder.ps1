@@ -97,7 +97,7 @@ $currentAzureContext = Get-AzContext
 $azureRmProfile = [Microsoft.Azure.Commands.Common.Authentication.Abstractions.AzureRmProfileProvider]::Instance.Profile
 $profileClient = New-Object Microsoft.Azure.Commands.ResourceManager.Common.RMProfileClient($azureRmProfile)
     
-Write-Verbose ("Tenant: {0}" -f $currentAzureContext.Subscription.Name)
+Write-Host ("Tenant: {0}" -f $currentAzureContext.Subscription.Name)
  
 ### Step 4: Get token  
 $token = $profileClient.AcquireAccessToken($currentAzureContext.Tenant.TenantId)
@@ -109,9 +109,9 @@ $managementEp = $currentAzureContext.Environment.ResourceManagerUrl
 
 $urlBuildStatus = [System.String]::Format("{0}subscriptions/{1}/resourceGroups/$imageResourceGroup/providers/Microsoft.VirtualMachineImages/imageTemplates/{2}?api-version=2019-05-01-preview", $managementEp, $currentAzureContext.Subscription.Id, $imageTemplateName)
 
-$buildStatusResult = Invoke-WebRequest -Method GET  -Uri $urlBuildStatus -UseBasicParsing -Headers  @{"Authorization" = ("Bearer " + $accessToken) } -ContentType application/json 
-$buildJsonStatus = $buildStatusResult.Content
-$buildJsonStatus
+#$buildStatusResult = Invoke-WebRequest -Method GET  -Uri $urlBuildStatus -UseBasicParsing -Headers  @{"Authorization" = ("Bearer " + $accessToken) } -ContentType application/json 
+$buildStatusResult = Invoke-RestMethod -Method Get -Uri $urlBuildStatus -Headers  @{"Authorization" = ("Bearer " + $accessToken) } -ContentType application/json 
+$buildStatusResult.properties.lastRunStatus
 
 
 ##Create a VM
