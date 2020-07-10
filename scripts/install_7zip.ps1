@@ -1,4 +1,5 @@
 $ErrorActionPreference = "Stop"
+$ProgressPreference = "SilentlyContinue"
 $stopWatch = [System.Diagnostics.Stopwatch]::new()
 $stopWatch.Reset()
 $stopWatch.Start()
