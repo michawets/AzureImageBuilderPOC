@@ -3,7 +3,7 @@ $ProgressPreference = "SilentlyContinue"
 $stopWatch = [System.Diagnostics.Stopwatch]::new()
 $stopWatch.Reset()
 $stopWatch.Start()
-$WVDMSTeamsUrl = "https://statics.teams.cdn.office.net/production-windows-x64/1.3.00.4461/Teams_windows_x64.msi"
+$WVDMSTeamsUrl = "https://statics.teams.cdn.office.net/production-windows-x64/1.3.00.13565/Teams_windows_x64.msi"
 $WVDWebRTCurl = "https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RE4vkL6"
 $WVDWebRTCurl = "https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RE4yj0i"
 $VisualCRedisx64Url = "https://aka.ms/vs/16/release/vc_redist.x64.exe"
