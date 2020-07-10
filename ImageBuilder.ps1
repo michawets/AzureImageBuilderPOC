@@ -43,7 +43,9 @@ if ($null -eq (Get-Module -ListAvailable Az.ManagedServiceIdentity)) {
 }
 
 # create identity
-New-AzUserAssignedIdentity -ResourceGroupName $imageResourceGroup -Name $idenityName
+if ($null -eq (Get-AzUserAssignedIdentity -Name $idenityName -ResourceGroupName $imageResourceGroup)) {
+    New-AzUserAssignedIdentity -ResourceGroupName $imageResourceGroup -Name $idenityName
+}
 
 $idenityNameResourceId = $(Get-AzUserAssignedIdentity -ResourceGroupName $imageResourceGroup -Name $idenityName).Id
 $idenityNamePrincipalId = $(Get-AzUserAssignedIdentity -ResourceGroupName $imageResourceGroup -Name $idenityName).PrincipalId
