@@ -1,26 +1,21 @@
 $ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
-$stopWatch = [System.Diagnostics.Stopwatch]::new()
-$stopWatch.Reset()
-$stopWatch.Start()
+
 $WVDMSTeamsUrl = "https://statics.teams.cdn.office.net/production-windows-x64/1.3.00.13565/Teams_windows_x64.msi"
 $WVDWebRTCurl = "https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RE4vkL6"
-$WVDWebRTCurl = "https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RE4yj0i"
 $VisualCRedisx64Url = "https://aka.ms/vs/16/release/vc_redist.x64.exe"
 $VisualCRedisx86Url = "https://aka.ms/vs/16/release/vc_redist.x86.exe"
 
-$logFileLocation = $env:TEMP + "\MSTeamsInstallation.log"
+$logFileLocation = "c:\buildArtifacts\MSTeamsInstallation.log"
 
 ("MSTeams download URL = '{0}'" -f $WVDMSTeamsUrl) | Out-File $logFileLocation -Append
 
-$ScriptPath = (Get-Item .).FullName
+$MSTeamsInstaller = "c:\buildArtifacts\Teams_windows_x64.msi"
+$WebRTCInstaller = "c:\buildArtifacts\MsRdcWebRTCSvc_HostSetup_0.11.0_x64.msi"
+$VisualCRedisx64Installer = "c:\buildArtifacts\vc_redist.x64.exe"
+$VisualCRedisx86Installer = "c:\buildArtifacts\vc_redist.x86.exe"
 
-$MSTeamsInstaller = [System.IO.Path]::Combine($ScriptPath, "Teams_windows_x64.msi")
-$WebRTCInstaller = [System.IO.Path]::Combine($ScriptPath, "MsRdcWebRTCSvc_HostSetup_0.11.0_x64.msi")
-$VisualCRedisx64Installer = [System.IO.Path]::Combine($ScriptPath, "vc_redist.x64.exe")
-$VisualCRedisx86Installer = [System.IO.Path]::Combine($ScriptPath, "vc_redist.x86.exe")
-
-("MSTeams full download URL = '{0}'" -f $url) | Out-File $logFileLocation -Append
+("MSTeams full download URL = '{0}'" -f $WVDMSTeamsUrl) | Out-File $logFileLocation -Append
 ("MSTeams download location = '{0}'" -f $MSTeamsInstaller) | Out-File $logFileLocation -Append
 ("WebRTC download location = '{0}'" -f $WebRTCInstaller) | Out-File $logFileLocation -Append
 ("Microsoft Visual C++ Redistributable x64 download location = '{0}'" -f $VisualCRedisx64Installer) | Out-File $logFileLocation -Append
@@ -65,7 +60,3 @@ $VisualCRedisx86_install_status = Start-Process -FilePath $VisualCRedisx86Instal
 ("Starting WebRTC installer...") | Out-File $logFileLocation -Append
 $WVDWebRTC_install_status = Start-Process -FilePath $WebRTCInstaller -ArgumentList @('/quiet', '/norestart') -Wait -Passthru
 ("Installer finished with returncode '{0}'" -f $WVDWebRTC_install_status.ExitCode) | Out-File $logFileLocation -Append
-
-
-$stopWatch.Stop()
-("Install finished in '{0}' ms" -f $stopWatch.ElapsedMilliseconds) | Out-File $logFileLocation -Append
