@@ -1,6 +1,10 @@
 $ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
 
+if ($null -eq (Get-Item -Path "c:\buildArtifacts" -ErrorAction SilentlyContinue)) {
+    New-Item -Path "c:\buildArtifacts" -Force
+}
+
 $WVDMSTeamsUrl = "https://statics.teams.cdn.office.net/production-windows-x64/1.3.00.13565/Teams_windows_x64.msi"
 $WVDWebRTCurl = "https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RE4vkL6"
 $VisualCRedisx64Url = "https://aka.ms/vs/16/release/vc_redist.x64.exe"
@@ -40,7 +44,7 @@ Invoke-WebRequest -Uri $VisualCRedisx86Url -OutFile $VisualCRedisx86Installer -U
 
 ("Setting VDI registry key ") | Out-File $logFileLocation -Append
 if ($null -eq (Get-Item -Path "HKLM:\SOFTWARE\Microsoft\Teams" -ErrorAction SilentlyContinue)) {
-    New-Item -Path "HKLM:\SOFTWARE\Microsoft\Teams"
+    New-Item -Path "HKLM:\SOFTWARE\Microsoft\Teams" -Force
 }
 Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Teams" -Name "IsWVDEnvironment" -Value 1 -Type DWord -Force
 ("Finished.") | Out-File $logFileLocation -Append

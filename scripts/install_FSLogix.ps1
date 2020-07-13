@@ -1,6 +1,10 @@
 $ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
 
+if ($null -eq (Get-Item -Path "c:\buildArtifacts" -ErrorAction SilentlyContinue)) {
+    New-Item -Path "c:\buildArtifacts" -Force
+}
+
 $WVDFSLogixUrl = "https://aka.ms/fslogix_download"
 $logFileLocation = "c:\buildArtifacts\FSLogixInstallation.log"
 $FSLogixInstallerZip = "c:\buildArtifacts\FSLogix_Apps.zip"

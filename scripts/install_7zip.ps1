@@ -1,5 +1,10 @@
 $ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
+
+if ($null -eq (Get-Item -Path "c:\buildArtifacts" -ErrorAction SilentlyContinue)) {
+    New-Item -Path "c:\buildArtifacts" -Force
+}
+
 $WVD7zipUrl = "https://www.7-zip.org/a/7z1900-x64.exe"
 $logFileLocation = "c:\buildArtifacts\7zipInstallation.log"
 $7zipInstaller = "c:\buildArtifacts\7z1900-x64.exe"
