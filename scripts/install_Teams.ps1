@@ -49,10 +49,6 @@ if ($null -eq (Get-Item -Path "HKLM:\SOFTWARE\Microsoft\Teams" -ErrorAction Sile
 Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Teams" -Name "IsWVDEnvironment" -Value 1 -Type DWord -Force
 ("Finished.") | Out-File $logFileLocation -Append
 
-("Starting MSTeams installer...") | Out-File $logFileLocation -Append
-$MSTeams_install_status = Start-Process -FilePath $MSTeamsInstaller -ArgumentList @('ALLUSERS=1', 'ALLUSER=1', '/qn', '/norestart') -Wait -Passthru
-("Installer finished with returncode '{0}'" -f $MSTeams_install_status.ExitCode) | Out-File $logFileLocation -Append
-
 ("Starting Microsoft Visual C++ Redistributable x64 installer...") | Out-File $logFileLocation -Append
 $VisualCRedisx64_install_status = Start-Process -FilePath $VisualCRedisx64Installer -ArgumentList @('/install', '/quiet', '/norestart') -Wait -Passthru
 ("Installer finished with returncode '{0}'" -f $VisualCRedisx64_install_status.ExitCode) | Out-File $logFileLocation -Append
@@ -64,3 +60,7 @@ $VisualCRedisx86_install_status = Start-Process -FilePath $VisualCRedisx86Instal
 ("Starting WebRTC installer...") | Out-File $logFileLocation -Append
 $WVDWebRTC_install_status = Start-Process -FilePath $WebRTCInstaller -ArgumentList @('/quiet', '/norestart') -Wait -Passthru
 ("Installer finished with returncode '{0}'" -f $WVDWebRTC_install_status.ExitCode) | Out-File $logFileLocation -Append
+
+("Starting MSTeams installer...") | Out-File $logFileLocation -Append
+$MSTeams_install_status = Start-Process -FilePath $MSTeamsInstaller -ArgumentList @('ALLUSERS=1', 'ALLUSER=1', '/qn', '/norestart') -Wait -Passthru
+("Installer finished with returncode '{0}'" -f $MSTeams_install_status.ExitCode) | Out-File $logFileLocation -Append

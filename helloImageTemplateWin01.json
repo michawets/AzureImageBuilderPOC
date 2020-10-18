@@ -12,10 +12,7 @@
             "type": "string"
         }
     },
-
-    "variables": {
-    },
-
+    "variables": {},
     "resources": [
         {
             "name": "[parameters('imageTemplateName')]",
@@ -31,25 +28,20 @@
                 "type": "UserAssigned",
                 "userAssignedIdentities": {
                     "/subscriptions/1ab54fac-2bbe-4282-9c5b-561b8df622ab/resourcegroups/myimagebuilder-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/aibIdentity": {}
-
                 }
             },
             "properties": {
-
                 "buildTimeoutInMinutes": 100,
-
                 "vmProfile": {
                     "vmSize": "Standard_D1_v2",
                     "osDiskSizeGB": 127
                 },
-
                 "source": {
                     "type": "PlatformImage",
                     "publisher": "microsoftwindowsdesktop",
                     "offer": "office-365",
                     "sku": "20h1-evd-o365pp",
                     "version": "latest"
-
                 },
                 "customize": [
                     {
@@ -101,5 +93,4 @@
             }
         }
     ]
-
 }

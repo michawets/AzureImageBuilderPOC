@@ -43,7 +43,7 @@ if ($null -eq (Get-Module -ListAvailable Az.ManagedServiceIdentity)) {
 }
 
 # create identity
-if ($null -eq (Get-AzUserAssignedIdentity -Name $idenityName -ResourceGroupName $imageResourceGroup)) {
+if ($null -eq (Get-AzUserAssignedIdentity -Name $idenityName -ResourceGroupName $imageResourceGroup -ErrorAction SilentlyContinue)) {
     New-AzUserAssignedIdentity -ResourceGroupName $imageResourceGroup -Name $idenityName
 }
 
@@ -76,7 +76,7 @@ if ($null -eq (Get-AzRoleAssignment -ObjectId $idenityNamePrincipalId -RoleDefin
 
 
 # update AIB image config template
-$templateUrl = "https://raw.githubusercontent.com/danielsollondon/azvmimagebuilder/master/quickquickstarts/0_Creating_a_Custom_Windows_Managed_Image/helloImageTemplateWin01.json"
+$templateUrl = "https://raw.githubusercontent.com/michawets/AzureImageBuilderPOC/master/clean_template_win1020h1.json"
 $templateFilePath = "helloImageTemplateWin01.json"
 
 # download configs
@@ -97,30 +97,12 @@ Invoke-AzResourceAction -ResourceName $imageTemplateName -ResourceGroupName $ima
 
 ########################################
 #Get Status of the Image Build and Query
-
-## Authentication Setup
-### Step 1: Update context
-$currentAzureContext = Get-AzContext
-
-### Step 2: Get instance profile
-$azureRmProfile = [Microsoft.Azure.Commands.Common.Authentication.Abstractions.AzureRmProfileProvider]::Instance.Profile
-$profileClient = New-Object Microsoft.Azure.Commands.ResourceManager.Common.RMProfileClient($azureRmProfile)
-    
-Write-Host ("Tenant: {0}" -f $currentAzureContext.Subscription.Name)
- 
-### Step 4: Get token  
-$token = $profileClient.AcquireAccessToken($currentAzureContext.Tenant.TenantId)
-$accessToken = $token.AccessToken
-
-## Get Image Build Status and Properties
-## Query the Image Template for Current or Last Run Status and Image Template Settings
-$managementEp = $currentAzureContext.Environment.ResourceManagerUrl
-
-$urlBuildStatus = [System.String]::Format("{0}subscriptions/{1}/resourceGroups/$imageResourceGroup/providers/Microsoft.VirtualMachineImages/imageTemplates/{2}?api-version=2019-05-01-preview", $managementEp, $currentAzureContext.Subscription.Id, $imageTemplateName)
-
-#$buildStatusResult = Invoke-WebRequest -Method GET  -Uri $urlBuildStatus -UseBasicParsing -Headers  @{"Authorization" = ("Bearer " + $accessToken) } -ContentType application/json 
-$buildStatusResult = Invoke-RestMethod -Method Get -Uri $urlBuildStatus -Headers  @{"Authorization" = ("Bearer " + $accessToken) } -ContentType application/json 
-$buildStatusResult.properties.lastRunStatus
+$resourcetowatch = Get-AzResource –ResourceGroupName $imageResourceGroup -ResourceType Microsoft.VirtualMachineImages/imageTemplates -Name $imageTemplateName
+do {
+    Start-Sleep -Seconds 30
+    $status = (Get-AzResource –ResourceGroupName $imageResourceGroup -ResourceType Microsoft.VirtualMachineImages/imageTemplates -Name $imageTemplateName).Properties.lastRunStatus
+    $status | Format-Table *
+} while ($status.runState -eq "Running")
 
 
 ##Create a VM
