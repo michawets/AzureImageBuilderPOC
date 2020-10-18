@@ -19,11 +19,6 @@
             "type": "Microsoft.VirtualMachineImages/imageTemplates",
             "apiVersion": "[parameters('api-version')]",
             "location": "[parameters('svclocation')]",
-            "dependsOn": [],
-            "tags": {
-                "imagebuilderTemplate": "Windows1020H1",
-                "userIdentity": "enabled"
-            },
             "identity": {
                 "type": "UserAssigned",
                 "userAssignedIdentities": {
@@ -31,11 +26,6 @@
                 }
             },
             "properties": {
-                "buildTimeoutInMinutes": 100,
-                "vmProfile": {
-                    "vmSize": "Standard_D1_v2",
-                    "osDiskSizeGB": 127
-                },
                 "source": {
                     "type": "PlatformImage",
                     "publisher": "microsoftwindowsdesktop",
@@ -53,8 +43,7 @@
                         "type": "PowerShell",
                         "name": "settingUpMgmtAgtPath",
                         "inline": [
-                            "Set-NetFirewallProfile -Profile 'Domain','Public','Private' -Enabled False",
-                            "Set-ItemProperty -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Terminal Server\\WinStations\\rdp-sxs' -Name 'fReverseConnectMode' -Value 1 -Type DWord -Force"
+                            "Set-NetFirewallProfile -Profile 'Domain','Public','Private' -Enabled False"
                         ]
                     },
                     {
@@ -89,7 +78,17 @@
                             "baseosimg": "Windows1020H1"
                         }
                     }
-                ]
+                ],
+                "buildTimeoutInMinutes": 100,
+                "vmProfile": {
+                    "vmSize": "Standard_D1_v2",
+                    "osDiskSizeGB": 127
+                }
+            },
+            "dependsOn": [],
+            "tags": {
+                "imagebuilderTemplate": "Windows1020H1",
+                "userIdentity": "enabled"
             }
         }
     ]
