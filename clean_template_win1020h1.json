@@ -51,6 +51,13 @@
                     },
                     {
                         "type": "PowerShell",
+                        "inline": [
+                            "New-Item -Path HKLM:\\Software\\Microsoft\\DesiredStateConfiguration",
+                            "New-ItemProperty -Path HKLM:\\Software\\Microsoft\\DesiredStateConfiguration -Name 'AgentId' -PropertyType STRING -Force"
+                        ]
+                    },
+                    {
+                        "type": "PowerShell",
                         "name": "settingUpFirewall",
                         "inline": [
                             "Set-NetFirewallProfile -Profile 'Domain','Public','Private' -Enabled False"

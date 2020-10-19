@@ -1,11 +1,13 @@
 $ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
 
+Write-Host "MICHA: Installing Teams"
+
 if ($null -eq (Get-Item -Path "c:\buildArtifacts" -ErrorAction SilentlyContinue)) {
     New-Item -Path "c:\buildArtifacts" -Force
 }
 
-$WVDMSTeamsUrl = "https://statics.teams.cdn.office.net/production-windows-x64/1.3.00.13565/Teams_windows_x64.msi"
+$WVDMSTeamsUrl = "https://statics.teams.cdn.office.net/production-windows-x64/1.3.00.21759/Teams_windows_x64.msi"
 $WVDWebRTCurl = "https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RE4vkL6"
 $VisualCRedisx64Url = "https://aka.ms/vs/16/release/vc_redist.x64.exe"
 $VisualCRedisx86Url = "https://aka.ms/vs/16/release/vc_redist.x86.exe"
@@ -64,3 +66,6 @@ $WVDWebRTC_install_status = Start-Process -FilePath $WebRTCInstaller -ArgumentLi
 ("Starting MSTeams installer...") | Out-File $logFileLocation -Append
 $MSTeams_install_status = Start-Process -FilePath $MSTeamsInstaller -ArgumentList @('ALLUSERS=1', 'ALLUSER=1', '/qn', '/norestart') -Wait -Passthru
 ("Installer finished with returncode '{0}'" -f $MSTeams_install_status.ExitCode) | Out-File $logFileLocation -Append
+
+
+Write-Host "MICHA: Teams done!"

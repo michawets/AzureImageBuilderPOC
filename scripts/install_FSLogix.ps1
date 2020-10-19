@@ -1,6 +1,8 @@
 $ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
 
+Write-Host "MICHA: Installing FSLogix"
+
 if ($null -eq (Get-Item -Path "c:\buildArtifacts" -ErrorAction SilentlyContinue)) {
     New-Item -Path "c:\buildArtifacts" -Force
 }
@@ -31,3 +33,5 @@ $FSLogixInstaller = "c:\buildArtifacts\x64\Release\FSLogixAppsSetup.exe"
 ("Starting installer...") | Out-File $logFileLocation -Append
 $fsLogix_install_status = Start-Process -FilePath $FSLogixInstaller -ArgumentList @('/install', '/quiet', '/norestart') -Wait -Passthru
 ("Installer finished with returncode '{0}'" -f $fsLogix_install_status.ExitCode) | Out-File $logFileLocation -Append
+
+Write-Host "MICHA: FSLogix done!"

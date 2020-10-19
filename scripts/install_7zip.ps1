@@ -1,6 +1,8 @@
 $ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
 
+Write-Host "MICHA: Installing 7zip"
+
 if ($null -eq (Get-Item -Path "c:\buildArtifacts" -ErrorAction SilentlyContinue)) {
     New-Item -Path "c:\buildArtifacts" -Force
 }
@@ -20,3 +22,5 @@ Invoke-WebRequest -Uri $WVD7zipUrl -OutFile $7zipInstaller -UseBasicParsing
 ("Starting installer...") | Out-File $logFileLocation -Append
 $7zip_install_status = Start-Process -FilePath $7zipInstaller -ArgumentList @('/S') -Wait -Passthru
 ("Installer finished with returncode '{0}'" -f $7zip_install_status.ExitCode) | Out-File $logFileLocation -Append
+
+Write-Host "MICHA: 7zip done!"
