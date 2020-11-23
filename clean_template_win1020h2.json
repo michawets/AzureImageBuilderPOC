@@ -21,33 +21,35 @@
             "location": "[parameters('svclocation')]",
             "dependsOn": [],
             "tags": {
-                "imagebuilderTemplate": "Windows1020H1",
+                "imagebuilderTemplate": "Windows1020H2",
                 "userIdentity": "enabled"
             },
             "identity": {
                 "type": "UserAssigned",
                 "userAssignedIdentities": {
-                    "/subscriptions/1ab54fac-2bbe-4282-9c5b-561b8df622ab/resourcegroups/myimagebuilder-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/aibIdentity": {}
+                    "<imgBuilderId>": {}
                 }
             },
             "properties": {
                 "buildTimeoutInMinutes": 100,
                 "vmProfile": {
-                    "vmSize": "Standard_D1_v2",
+                    "vmSize": "Standard_D4s_v3",
                     "osDiskSizeGB": 127
                 },
                 "source": {
                     "type": "PlatformImage",
                     "publisher": "microsoftwindowsdesktop",
                     "offer": "office-365",
-                    "sku": "20h1-evd-o365pp",
+                    "sku": "20h2-evd-o365pp",
                     "version": "latest"
                 },
                 "customize": [
                     {
                         "type": "PowerShell",
-                        "name": "CreateBuildPath",
-                        "scriptUri": "https://raw.githubusercontent.com/danielsollondon/azvmimagebuilder/master/testPsScript.ps1"
+                        "inline": [
+                            "New-Item -Path HKLM:\\Software\\Microsoft\\DesiredStateConfiguration",
+                            "New-ItemProperty -Path HKLM:\\Software\\Microsoft\\DesiredStateConfiguration -Name 'AgentId' -PropertyType STRING -Force"
+                        ]
                     },
                     {
                         "type": "PowerShell",
@@ -58,13 +60,13 @@
                     },
                     {
                         "type": "PowerShell",
-                        "name": "Install_7zip",
-                        "scriptUri": "https://raw.githubusercontent.com/michawets/AzureImageBuilderPOC/master/scripts/install_7zip.ps1"
+                        "name": "Install_VSCode",
+                        "scriptUri": "https://raw.githubusercontent.com/michawets/AzureImageBuilderPOC/master/scripts/install_VSCode.ps1"
                     },
                     {
                         "type": "PowerShell",
                         "name": "Install_Teams",
-                        "scriptUri": "https://raw.githubusercontent.com/michawets/AzureImageBuilderPOC/master/scripts/install_Teams.ps1"
+                        "scriptUri": "https://raw.githubusercontent.com/michawets/AzureImageBuilderPOC/master/scripts/install_Acrobat.ps1"
                     },
                     {
                         "type": "PowerShell",
@@ -80,12 +82,12 @@
                 "distribute": [
                     {
                         "type": "ManagedImage",
-                        "imageId": "/subscriptions/1ab54fac-2bbe-4282-9c5b-561b8df622ab/resourceGroups/myimagebuilder-rg/providers/Microsoft.Compute/images/Win1020h1",
-                        "location": "westeurope",
-                        "runOutputName": "winSvrSigR01",
+                        "imageId": "/subscriptions/<subscriptionID>/resourceGroups/<rgName>/providers/Microsoft.Compute/images/<imageName>",
+                        "location": "<region>",
+                        "runOutputName": "<runOutputName>",
                         "artifactTags": {
                             "source": "azVmImageBuilder",
-                            "baseosimg": "Windows1020H1"
+                            "baseosimg": "Windows1020H2"
                         }
                     }
                 ]
@@ -93,8 +95,3 @@
         }
     ]
 }
-
-
-
-
-
