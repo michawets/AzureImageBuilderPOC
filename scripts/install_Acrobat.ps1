@@ -4,7 +4,7 @@ $ProgressPreference = "SilentlyContinue"
 Write-Host "MICHA: Installing Acrobat"
 
 if ($null -eq (Get-Item -Path "c:\buildArtifacts" -ErrorAction SilentlyContinue)) {
-    New-Item -Path "c:\buildArtifacts" -Force
+    New-Item -Path "c:\buildArtifacts" -ItemType Directory -Force
 }
 
 $WVDAcrobatUrl = "http://ardownload.adobe.com/pub/adobe/reader/win/AcrobatDC/2000920063/AcroRdrDC2000920063_en_US.exe"

@@ -4,7 +4,7 @@ $ProgressPreference = "SilentlyContinue"
 Write-Host "MICHA: Installing FSLogix"
 
 if ($null -eq (Get-Item -Path "c:\buildArtifacts" -ErrorAction SilentlyContinue)) {
-    New-Item -Path "c:\buildArtifacts" -Force
+    New-Item -Path "c:\buildArtifacts" -ItemType Directory -Force
 }
 
 $WVDFSLogixUrl = "https://aka.ms/fslogix_download"

@@ -56,22 +56,26 @@
                         "name": "settingUpFirewall",
                         "inline": [
                             "Set-NetFirewallProfile -Profile 'Domain','Public','Private' -Enabled False"
-                        ]
+                        ],
+                        "runElevated": true
                     },
                     {
                         "type": "PowerShell",
                         "name": "Install_VSCode",
-                        "scriptUri": "https://raw.githubusercontent.com/michawets/AzureImageBuilderPOC/master/scripts/install_VSCode.ps1"
+                        "scriptUri": "https://raw.githubusercontent.com/michawets/AzureImageBuilderPOC/master/scripts/install_VSCode.ps1",
+                        "runElevated": true
                     },
                     {
                         "type": "PowerShell",
                         "name": "Install_Teams",
-                        "scriptUri": "https://raw.githubusercontent.com/michawets/AzureImageBuilderPOC/master/scripts/install_Acrobat.ps1"
+                        "scriptUri": "https://raw.githubusercontent.com/michawets/AzureImageBuilderPOC/master/scripts/install_Acrobat.ps1",
+                        "runElevated": true
                     },
                     {
                         "type": "PowerShell",
                         "name": "Install_FSLogix",
-                        "scriptUri": "https://raw.githubusercontent.com/michawets/AzureImageBuilderPOC/master/scripts/install_FSLogix.ps1"
+                        "scriptUri": "https://raw.githubusercontent.com/michawets/AzureImageBuilderPOC/master/scripts/install_FSLogix.ps1",
+                        "runElevated": true
                     },
                     {
                         "type": "WindowsRestart",
